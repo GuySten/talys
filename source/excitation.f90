@@ -175,6 +175,11 @@ subroutine excitation
       Eexup(nex) = 0.5 * (Eex + Eexmax)
     else
       Eexlow(nex) = Eex - 0.5 * deltaEx(nex, Ncomp, Zcomp)
+!
+! The first continuum bin starts at the last discrete level (see exgrid), but the last discrete level already takes the
+! population up to halfway to this bin. Start the bin there, so that population is not counted twice.
+!
+      if (nex == NL + 1) Eexlow(nex) = Eexup(NL)
       Eexup(nex) = Eex + 0.5 * deltaEx(nex, Ncomp, Zcomp)
     endif
   enddo
