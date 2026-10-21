@@ -287,7 +287,11 @@ subroutine multiple
       col = ''
       un = ''
       if (skipCN(Zcomp, Ncomp) == 1) cycle
-      if (xspopnuc(Zcomp, Ncomp) < cutnuc) then
+!
+! The initial compound nucleus is never cut. After binary emission it holds only the gamma decay of the entrance channel,
+! which can be far below the absolute limit while it is the whole capture cross section.
+!
+      if (xspopnuc(Zcomp, Ncomp) < cutnuc .and. (Zcomp > 0 .or. Ncomp > 0)) then
         xspopnuc(Zcomp, Ncomp) = 0.
         goto 500
       endif
