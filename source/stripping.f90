@@ -63,7 +63,7 @@ subroutine stripping
   integer           :: k            ! designator for particle
   integer           :: l            ! multipolarity
   integer           :: N            ! neutron number of residual nucleus
-  integer           :: ndelta       ! number of transferred particles
+  integer           :: ndelta       ! number of excitons created by the transfer
   integer           :: ndeltanu     ! number of transferred neutrons
   integer           :: ndeltapi     ! number of transferred protons
   integer           :: nen          ! energy counter
@@ -131,9 +131,13 @@ subroutine stripping
 ! Also applied to incident tritons and helions
 !
     if (k0 >= 4 .and. (type == 1 .or. type == 2)) Kap = Kap * max(4.-Atarget/80., 1.)
-    ndelta = abs(parA(k0) - parA(type))
+!
+! The exponent n of Kalbach's Eq. (1) is the total number of excitons, n = ppi + hpi + pnu + hnu. It equals |Aa - Ab| except for
+! t-h charge exchange, where one nucleon is stripped and another picked up (n = 2).
+!
     ndeltapi = parZ(k0) - parZ(type)
     ndeltanu = parN(k0) - parN(type)
+    ndelta = abs(ndeltapi) + abs(ndeltanu)
     Va = 12.5 * projmass
     term2 = (Kap / projmass) * (projmass / (Einc + Va)) **(2 * ndelta)
 !
