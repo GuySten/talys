@@ -159,7 +159,11 @@ subroutine densprepare(Zcomp, Ncomp, idfis)
 !
   Ex0plus = Exinc + 0.5 * dExinc
   Ex0min = Exinc - 0.5 * dExinc
-  Efs = Exinc - S(Zcomp, Ncomp, 1)
+!
+! fstrength obtains the excitation energy as Efs + S(Zcomp, Ncomp, k0), so the separation energy of the projectile
+! type is subtracted here (for incident neutrons this is the neutron separation energy).
+!
+  Efs = Exinc - S(Zcomp, Ncomp, k0)
   do type = 0, 6
     if (parskip(type)) cycle
     Zix = Zindex(Zcomp, Ncomp, type)
