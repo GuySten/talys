@@ -216,6 +216,7 @@ subroutine breakup
 !
     PBUint = 0.
     do nen = ebegin(type), eend(type)
+      PBU(nen) = 0.
       Eout = egrid(nen)
       if (Eout <= Epk) then
         wi = wmin
