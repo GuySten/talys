@@ -29,6 +29,8 @@ subroutine breakup
 !   ebegin       ! first energy point of energy grid
 !   egrid        ! outgoing energy grid
 !   Einc         ! incident energy in MeV
+! Variables for incident channel
+!   Tlinc        ! transm. coeff. as a function of l for incident channel
 ! Variables for energies
 !   eend         ! last energy point of energy grid
 !   eninccm      ! center - of - mass incident energy in MeV
@@ -235,6 +237,13 @@ subroutine breakup
     enddo
     if (PBUint > 0.) then
       xsbreakup = factor * Cbreak(type) * (Nab(k0, type) * Deff * Deff + Napb(k0, type) * Deff) * exp(Einc / Ksig) * Tpren
+!
+! Kalbach's penetrability Tpren describes the onset of break-up (E1/2 = 34 MeV for one nucleon), not the Coulomb barrier of the
+! entrance channel: the model was fitted to data from 14.8 MeV (deuterons) and 70 MeV (helions) up, and to none for tritons
+! (Phys. Rev. C 95, 014606 (2017), Table I). Below the Coulomb barrier break-up is part of the reaction cross section, so for
+! incident tritons it is also multiplied by the penetrability of the incident channel, as the transfer term (stripping.f90).
+!
+      if (k0 == 4) xsbreakup = xsbreakup * Tlinc(0)
       do nen = ebegin(type), eend(type)
         xspreeqbu(type, nen) = xsbreakup * PBU(nen)
       enddo

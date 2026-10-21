@@ -171,12 +171,12 @@ subroutine stripping
 ! complex-particle data well above the Coulomb barrier (alpha particles from 35 MeV). Kalbach's other direct components do
 ! have one: knockout is proportional to the reaction cross section of the incident channel (knockout.f90), and break-up to
 ! the barrier penetrability [1 + exp((E1/2 - Einc)/w)]^-1, which is 1/2 at the barrier (Phys. Rev. C 95, 014606 (2017),
-! breakup.f90). For incident alpha particles the transfer term is multiplied by the penetrability of the incident channel,
-! the s-wave transmission coefficient. The alpha optical potential is strongly absorbing, so this coefficient is 1/2 at the top
-! of the barrier and 1 above it. For nucleons it stays below 1 far above the barrier (nuclear transparency) and is not a
-! penetrability.
+! breakup.f90). For incident alpha particles and tritons the transfer term is multiplied by the penetrability of the incident
+! channel, the s-wave transmission coefficient. Their optical potentials are strongly absorbing, so this coefficient is 1/2 at
+! the top of the barrier and (within 1%) 1 above it. For nucleons it stays below 1 far above the barrier (nuclear transparency)
+! and is not a penetrability.
 !
-    if (k0 == 6) termps = termps * Tlinc(0)
+    if (k0 == 4 .or. k0 == 6) termps = termps * Tlinc(0)
 !
 ! XNT function
 !
