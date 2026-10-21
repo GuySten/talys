@@ -19,10 +19,6 @@ subroutine preeqcomplex
 !   pespinmodel     ! model for pre - equilibrium or compound spin distribution
 ! Variables for main input
 !   k0              ! index of incident particle
-! Variables for nuclides
-!   coulbar         ! Coulomb barrier
-! Constants
-!   parZ            ! charge number of particle
 ! Variables for energy grid
 !   deltaE          ! energy bin around outgoing energies
 !   ebegin          ! first energy point of energy grid
@@ -31,7 +27,6 @@ subroutine preeqcomplex
 ! Variables for preequilibrium initialization
 !   maxJph          ! maximal spin for particle - hole states
 ! Variables for incident channel
-!   Tlinc           ! transm. coeff. as a function of l for incident channel
 !   xspreeq         ! preeq. cross section per particle type and outgoing energy
 ! Variables for preequilibrium
 !   xsflux          ! cross section flux
@@ -82,13 +77,6 @@ subroutine preeqcomplex
   c2 = 0.1 * coulbar(k0)
   expo = (Einc - c1) / c2
   if (expo <= 80.) damper = 1. - 1. / (1. + exp(expo))
-!
-! Below the Coulomb barrier the reaction cross section falls with the penetrability of the incident channel, but the pickup,
-! stripping, knockout and break-up terms do not. For charged projectiles they are therefore scaled with the s-wave transmission
-! coefficient of the incident channel, relative to its value of 1/2 at the top of the barrier, so that their share of the
-! reaction cross section cannot grow as the incident energy falls below the barrier.
-!
-  if (parZ(k0) > 0) damper = damper * min(1., 2. * Tlinc(0))
   pecompsum = 0.
   do type = 1, 6
     do nen = ebegin(type), eend(type)
